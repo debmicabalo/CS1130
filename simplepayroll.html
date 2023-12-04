@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payroll System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #e0e0f4;
+            color: #4b0082;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #1a0066;
+        }
+
+        button {
+            background-color: #483d8b;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #6a5acd;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #8a2be2;
+            color: #ffffff;
+        }
+
+        #redirectButton {
+            background-color: #483d8b;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #redirectButton:hover {
+            background-color: #6a5acd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Payroll System</h2>
+
+    <button onclick="addEmployee()">Add Employee</button>
+    <button onclick="deleteEmployee()">Delete Employee</button>
+
+    <button id="redirectButton" onclick="redirectToIndex()">Back to Home</button>
+
+    <table id="payrollTable">
+        <tr>
+            <th>No.</th>
+            <th>Employee Name</th>
+            <th>Days Worked</th>
+            <th>Daily Rate</th>
+            <th>Gross Pay</th>
+            <th>Deduction Amount</th>
+            <th>Net Pay</th>
+        </tr>
+    </table>
+
+    <script>
+        var payrollList = [];
+
+        function addEmployee() {
+            var employeeName = prompt("Enter Employee Name:");
+            var daysWorked = parseFloat(prompt("Enter Days Worked:"));
+            var dailyRate = parseFloat(prompt("Enter Daily Rate:"));
+            var deductionAmount = parseFloat(prompt("Enter Deduction Amount:"));
+
+            var grossPay = daysWorked * dailyRate;
+            var netPay = grossPay - deductionAmount;
+
+            var employee = {
+                employeeName: employeeName,
+                daysWorked: daysWorked,
+                dailyRate: dailyRate,
+                deductionAmount: deductionAmount,
+                grossPay: grossPay,
+                netPay: netPay
+            };
+
+            payrollList.push(employee);
+
+            updateTable();
+        }
+
+        function deleteEmployee() {
+            var lineNumber = parseInt(prompt("Enter Line Number to Delete:")) - 1;
+
+            if (lineNumber >= 0 && lineNumber < payrollList.length) {
+                payrollList.splice(lineNumber, 1);
+                updateTable();
+            } else {
+                alert("Invalid Line Number");
+            }
+        }
+
+        function updateTable() {
+            var table = document.getElementById("payrollTable");
+            table.innerHTML = "<tr><th>No.</th><th>Employee Name</th><th>Days Worked</th><th>Daily Rate</th><th>Gross Pay</th><th>Deduction Amount</th><th>Net Pay</th></tr>";
+
+            for (var i = 0; i < payrollList.length; i++) {
+                var employee = payrollList[i];
+
+                var row = table.insertRow(-1);
+                var cellNumber = row.insertCell(0);
+                var cellEmployeeName = row.insertCell(1);
+                var cellDaysWorked = row.insertCell(2);
+                var cellDailyRate = row.insertCell(3);
+                var cellGrossPay = row.insertCell(4);
+                var cellDeductionAmount = row.insertCell(5);
+                var cellNetPay = row.insertCell(6);
+
+                cellNumber.innerHTML = i + 1;
+                cellEmployeeName.innerHTML = employee.employeeName;
+                cellDaysWorked.innerHTML = employee.daysWorked;
+                cellDailyRate.innerHTML = employee.dailyRate;
+                cellGrossPay.innerHTML = employee.grossPay.toFixed(2);
+                cellDeductionAmount.innerHTML = employee.deductionAmount.toFixed(2);
+                cellNetPay.innerHTML = employee.netPay.toFixed(2);
+            }
+        }
+
+        function redirectToIndex() {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+</body>
+</html>
